@@ -12,7 +12,7 @@ sessions allows safe and easy session state managements
 ### Collaborators:
 
 * services: singletons which maintain and issue out sessions to consumers
-* sessions: non-singletons, typically key'd to a model which provide ephmeral state.
+* sessions: non-singletons, typically key'd to a model which provide ephemeral state.
 
 ## Usage
 
