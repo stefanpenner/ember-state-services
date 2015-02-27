@@ -25,7 +25,7 @@ import Ember from 'ember';
 
 export default Ember.Object.extend(Session, {
   sessionName: 'emailEdit',
-  prepareSession: function(Factory, model) {
+  setupSession: function(Factory, model) {
     return Factory.create({
       content: model
     });
