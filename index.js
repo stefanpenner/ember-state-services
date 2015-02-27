@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'service-sessions'
+  name: 'ember-state-services'
 };

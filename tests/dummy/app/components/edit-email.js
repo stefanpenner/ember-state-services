@@ -2,18 +2,19 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'form',
-  session: Ember.computed('email', function() {
-    return this.editEmailService.sessionFor(this.get('email'));
+  editEmailService: Ember.inject.service('edit-email'),
+  state: Ember.computed('email', function() {
+    return this.editEmailService.stateFor(this.get('email'));
   }).readOnly(),
 
   actions: {
     save: function() {
-      this.get('session').applyChanges();
+      this.get('state').applyChanges();
       this.sendAction('on-save', this.get('email'));
     },
 
     cancel: function() {
-      this.get('session').discardChanges();
+      this.get('state').discardChanges();
       this.sendAction('on-cancel', this.get('email'));
     }
   }

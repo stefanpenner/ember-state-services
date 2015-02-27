@@ -1,5 +1,5 @@
 {
-  "name": "service-sessions",
+  "name": "ember-state-services",
   "dependencies": {
     "handlebars": "~1.3.0",
     "jquery": "^1.11.1",
