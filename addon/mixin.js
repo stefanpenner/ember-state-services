@@ -6,41 +6,43 @@ export default Ember.Mixin.create({
 
     var service = this;
     var container = this.container;
-    var sessionName = 'session:' + this.sessionName;
+    var stateName = 'state:' + this.stateName;
 
-    if (!container.has(sessionName)) {
-      throw new TypeError('Unknown SessionFactory: `' + sessionName + '`');
+    if (!container.has(stateName)) {
+      throw new TypeError('Unknown StateFactory: `' + stateName + '`');
     }
 
-    var SessionFactory = this.container.lookupFactory(sessionName);
+    var StateFactory = this.container.lookupFactory(stateName);
 
-    this._sessions = new Ember.MapWithDefault({
+    this.states = new Ember.MapWithDefault({
       defaultValue: function(key) {
-        return service.setupSession(SessionFactory, key);
+        return service.setupState(StateFactory, key);
       }
     });
   },
 
-  setupSession: function(factory, key) {
-    return factory.create({ model: key });
+  setupState: function(factory, key) {
+    return factory.create({
+      content: key
+    });
   },
 
-  hasSessionFor: function(key) {
-    return this._sessions.has(key);
+  hasStateFor: function(key) {
+    return this.states.has(key);
   },
 
-  sessionFor: function(key) {
-    return this._sessions.get(key);
+  stateFor: function(key) {
+    return this.states.get(key);
   },
 
-  cleanupSession: function(session) {
-    session.destroy();
+  cleanupState: function(state) {
+    state.destroy();
   },
 
-  endSessionFor: function(key) {
-    var session = this._sessions.get(key);
+  teardownStateFor: function(key) {
+    var state = this.stateFor(key);
 
-    this.cleanupSession(session);
-    this._sessions.delete(key);
+    this.cleanupState(state);
+    this.states.delete(key);
   }
 });

@@ -1,18 +1,17 @@
-# Service-sessions
+# ember-state-services
 
-This addon introduces a session pattern, to allow stateful services to service
+This addon introduces a state management pattern using services, which allows them to serve
 multiple consumers (often components). 
 
 An example could be a master/detail experience where the detail view is a
-component which allows editing of content. It would be unfortunate, if
-navigating would lose un-saved changes, it would also be unfortunate if the
-state between the edit components were to leak. Instead the service issuing our
-sessions allows safe and easy session state managements
+component which allows editing of content. It would be unfortunate if
+navigating would lose un-saved changes; it would also be unfortunate if the
+state between the edit components were to leak between each other. Instead, the service issues a unique state per reference key, which keeps management safe and easy.
 
 ### Collaborators:
 
-* services: singletons which maintain and issue out sessions to consumers
-* sessions: non-singletons, typically key'd to a model which provide ephemeral state.
+* services: singletons which maintain and issue out states to consumers
+* states: non-singletons, typically key'd to a model which provide ephemeral state.
 
 ## Usage
 
@@ -20,12 +19,12 @@ sessions allows safe and easy session state managements
 
 ```js
 // app/services/email-edit.js
-import Session from 'service-sessions'
 import Ember from 'ember';
+import StateMixin from 'ember-state-services/mixin'
 
-export default Ember.Object.extend(Session, {
-  sessionName: 'emailEdit',
-  setupSession: function(Factory, model) {
+export default Ember.Object.extend(StateMixin, {
+  stateName: 'emailEdit',
+  setupState: function(Factory, model) {
     return Factory.create({
       content: model
     });
@@ -33,10 +32,10 @@ export default Ember.Object.extend(Session, {
 });
 ```
 
-### session
+### state
 
 ```js
-// app/sessions/email-edit.js
+// app/states/email-edit.js
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 export default BufferedProxy.extend();
@@ -45,23 +44,25 @@ export default BufferedProxy.extend();
 learn more about buffered proxy: https://github.com/yapplabs/ember-buffered-proxy
 
 ### component
+
 ```js
 import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'form',
-  session: Ember.computed('email', function() {
-    return this.editEmailService.sessionFor(this.get('email'));
+  editEmailService: Ember.inject.service('email-edit'),
+  state: Ember.computed('email', function() {
+    return this.editEmailService.stateFor(this.get('email'));
   }).readOnly(),
 
   actions: {
     save: function() {
-      this.get('session').applyChanges();
+      this.get('state').applyChanges();
       this.sendAction('on-save', this.get('email'));
     },
 
     cancel: function() {
-      this.get('session').discardChanges();
+      this.get('state').discardChanges();
       this.sendAction('on-cancel', this.get('email'));
     }
   }
@@ -71,14 +72,14 @@ export default Ember.Component.extend({
 ### template
 
 ```js
-<label>Subect: {{input value=session.subject}}</label><br>
-<label>from:   {{input value=session.from}}</label><br>
-<label>body:   {{textarea value=session.body}}</label><br>
+<label>Subect: {{input value=state.subject}}</label><br>
+<label>from:   {{input value=state.from}}</label><br>
+<label>body:   {{textarea value=state.body}}</label><br>
 ```
 
 ## Installation
 
-* `npm install --save ember-service-sessions'
+* `npm install --save ember-state-services`
 
 ## Example
 

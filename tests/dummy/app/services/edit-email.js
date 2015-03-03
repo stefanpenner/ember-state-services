@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import Session from 'service-sessions/mixin';
+import StateMixin from 'ember-state-services/mixin';
 
-export default Ember.Object.extend(Session, {
-  sessionName: 'edit-email',
-  setupSession: function(factory, model) {
+export default Ember.Object.extend(StateMixin, {
+  stateName: 'edit-email',
+  setupState: function(factory, model) {
     return factory.create({
       content: model
     });
