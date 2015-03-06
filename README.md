@@ -72,7 +72,7 @@ export default Ember.Component.extend({
 ### template
 
 ```js
-<label>Subect: {{input value=state.subject}}</label><br>
+<label>Subject: {{input value=state.subject}}</label><br>
 <label>from:   {{input value=state.from}}</label><br>
 <label>body:   {{textarea value=state.body}}</label><br>
 ```
