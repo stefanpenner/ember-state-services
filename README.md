@@ -1,4 +1,4 @@
-# ember-state-services
+# ember-state-services [![Build Status](https://travis-ci.org/stefanpenner/ember-state-services.svg)](https://travis-ci.org/stefanpenner/ember-state-services)
 
 This addon introduces a state management pattern using services, which allows them to serve
 multiple consumers (often components). 
