@@ -82,7 +82,7 @@ test('teardownStateFor properly clears a state for a key', function(assert) {
   subject.set('model', 'person1');
   subject.get('state');
 
-  // teardownState calls destory which is scheduled
+  // teardownState calls destroy which is scheduled
   Ember.run(function() {
     subject.service.teardownStateFor('person1');
   });
