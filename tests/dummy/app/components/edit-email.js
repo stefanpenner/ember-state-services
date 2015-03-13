@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   tagName: 'form',
   editEmailService: Ember.inject.service('edit-email'),
   state: Ember.computed('email', function() {
-    return this.editEmailService.stateFor(this.get('email'));
+    return this.get('editEmailService').stateFor(this.get('email'));
   }).readOnly(),
 
   actions: {
