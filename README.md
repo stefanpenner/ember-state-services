@@ -25,9 +25,9 @@ import StateMixin from 'ember-state-services/mixin'
 export default Ember.Object.extend(StateMixin, {
   stateName: 'emailEdit',
   setupState(Factory, content) {
-   return Factory.create({
-     content
-   });
+    return Factory.create({
+      content
+    });
   }
 });
 ```
