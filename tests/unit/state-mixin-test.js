@@ -2,10 +2,10 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import StateMixin from 'ember-state-services/mixin';
 
-var State;
-var Service;
-var container;
-var subject;
+let State;
+let Service;
+let container;
+let subject;
 
 module('State Mixin', {
   setup: function() {
@@ -34,6 +34,12 @@ module('State Mixin', {
   }
 });
 
+test('state object is created with reference to correct container', function(assert) {
+  assert.expect(1);
+
+  assert.equal(subject.get('state.container'), container);
+});
+
 test('switching stateFor key will give new states for each unique key', function(assert) {
   assert.expect(2);
 
@@ -49,7 +55,6 @@ test('switching stateFor key will give new states for each unique key', function
   subject.set('model', 'person2');
   assert.equal(subject.get('state.firstName'), 'Jane');
 });
-
 
 test('hasStateFor returns true/false if a state exists for a given key', function(assert) {
   assert.expect(6);
