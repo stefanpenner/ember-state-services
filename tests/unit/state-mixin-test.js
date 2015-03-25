@@ -34,7 +34,7 @@ module('State Mixin', {
   }
 });
 
-test('state object is created with reference to correct container', function(assert) {
+test('state object is created with a reference to correct container', function(assert) {
   assert.expect(1);
 
   assert.equal(subject.get('state.container'), container);

@@ -19,6 +19,7 @@ export default Ember.Mixin.create({
 
   setupState(Factory, content) {
     return Factory.create({
+      container: this.container,
       content
     });
   },
