@@ -24,10 +24,10 @@ import StateMixin from 'ember-state-services/mixin'
 
 export default Ember.Object.extend(StateMixin, {
   stateName: 'emailEdit',
-  setupState: function(Factory, model) {
-    return Factory.create({
-      content: model
-    });
+  setupState(Factory, content) {
+   return Factory.create({
+     content
+   });
   }
 });
 ```
@@ -56,12 +56,12 @@ export default Ember.Component.extend({
   }).readOnly(),
 
   actions: {
-    save: function() {
+    save() {
       this.get('state').applyChanges();
       this.sendAction('on-save', this.get('email'));
     },
 
-    cancel: function() {
+    cancel() {
       this.get('state').discardChanges();
       this.sendAction('on-cancel', this.get('email'));
     }

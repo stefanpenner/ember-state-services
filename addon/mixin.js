@@ -1,46 +1,42 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  init: function() {
-    this._super.apply(this, arguments);
+  init() {
+    this._super(...arguments);
 
-    var service = this;
-    var container = this.container;
-    var stateName = 'state:' + this.stateName;
+    const stateName = 'state:' + this.stateName;
 
-    if (!container.has(stateName)) {
+    if (!this.container.has(stateName)) {
       throw new TypeError('Unknown StateFactory: `' + stateName + '`');
     }
 
-    var StateFactory = this.container.lookupFactory(stateName);
+    const StateFactory = this.container.lookupFactory(stateName);
 
     this.states = new Ember.MapWithDefault({
-      defaultValue: function(key) {
-        return service.setupState(StateFactory, key);
-      }
+      defaultValue: key => this.setupState(StateFactory, key)
     });
   },
 
-  setupState: function(factory, key) {
-    return factory.create({
-      content: key
+  setupState(Factory, content) {
+    return Factory.create({
+      content
     });
   },
 
-  hasStateFor: function(key) {
+  hasStateFor(key) {
     return this.states.has(key);
   },
 
-  stateFor: function(key) {
+  stateFor(key) {
     return this.states.get(key);
   },
 
-  cleanupState: function(state) {
+  cleanupState(state) {
     state.destroy();
   },
 
-  teardownStateFor: function(key) {
-    var state = this.stateFor(key);
+  teardownStateFor(key) {
+    const state = this.stateFor(key);
 
     this.cleanupState(state);
     this.states.delete(key);
