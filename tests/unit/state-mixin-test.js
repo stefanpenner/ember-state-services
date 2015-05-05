@@ -4,14 +4,16 @@ import StateMixin from 'ember-state-services/mixin';
 
 let State;
 let Service;
+let registry;
 let container;
 let subject;
 
 module('State Mixin', {
   setup: function() {
-    container = new Ember.Container();
+    registry = new Ember.Registry();
+    container = new Ember.Container(registry);
 
-    container.register('state:test-state', Ember.Object.extend({}), {
+    registry.register('state:test-state', Ember.Object.extend({}), {
         singleton:   true,
         instantiate: false
     });
@@ -103,4 +105,17 @@ test('teardownStateFor properly clears a state for a key', function(assert) {
 
   assert.equal(subject.get('state.firstName'), undefined);
   assert.ok(!subject.service.hasStateFor('person2'));
+});
+
+test('Creating a state service with an unknown StateFactory throws error', function(assert) {
+  assert.expect(1);
+  
+  Service = Ember.Service.extend(StateMixin, {
+    stateName: 'test-state-that-does-not-exist',
+    container: container
+  });
+
+  assert.throws(function() {
+    Service.create();
+  }, TypeError, 'Unknown StateFactory: `test-state-that-does-not-exist`');
 });

@@ -5,12 +5,11 @@ export default Ember.Mixin.create({
     this._super(...arguments);
 
     const stateName = 'state:' + this.stateName;
+    const StateFactory = this.container.lookupFactory(stateName);
 
-    if (!this.container.has(stateName)) {
+    if (StateFactory === undefined) {
       throw new TypeError('Unknown StateFactory: `' + stateName + '`');
     }
-
-    const StateFactory = this.container.lookupFactory(stateName);
 
     this.states = new Ember.MapWithDefault({
       defaultValue: key => this.setupState(StateFactory, key)
