@@ -1,6 +1,6 @@
 {
   "name": "ember-state-services",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Enable Ember services to manage state for consumers, such as components",
   "directories": {
     "doc": "doc",
