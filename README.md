@@ -23,7 +23,7 @@ import Ember from 'ember';
 import StateMixin from 'ember-state-services/mixin'
 
 export default Ember.Object.extend(StateMixin, {
-  stateName: 'emailEdit'
+  stateName: 'email-edit'
 });
 ```
 
