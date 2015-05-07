@@ -20,7 +20,7 @@ state between the edit components were to leak between each other. Instead, the 
 ```js
 // app/services/email-edit.js
 import Ember from 'ember';
-import StateMixin from 'ember-state-services/mixin'
+import StateMixin from 'ember-state-services/mixin';
 
 export default Ember.Object.extend(StateMixin, {
   stateName: 'email-edit'
