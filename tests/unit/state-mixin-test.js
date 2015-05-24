@@ -131,9 +131,7 @@ test('key is stored in content in state', function(assert) {
 test('content property name can be configured in service', function(assert) {
   assert.expect(1);
 
-  Ember.run(function() {
-    subject.service.set('keyPropertyName', 'key');
-  });
+  Service.keyPropertyName = "key";
 
   subject.set('model', 'person');
 
