@@ -16,9 +16,11 @@ export default Ember.Mixin.create({
     });
   },
 
+  keyPropertyName: 'content',
+
   setupState(Factory, content) {
     return Factory.create({
-      content
+      [this.get('keyPropertyName')]: content
     });
   },
 
