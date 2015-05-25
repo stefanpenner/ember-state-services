@@ -1,5 +1,9 @@
 import Ember from 'ember';
 
+Ember.Service.reopenClass({
+  keyPropertyName: 'content',
+});
+
 export default Ember.Mixin.create({
   init() {
     this._super(...arguments);
@@ -18,7 +22,7 @@ export default Ember.Mixin.create({
 
   setupState(Factory, content) {
     return Factory.create({
-      content
+      [this.constructor.keyPropertyName]: content
     });
   },
 

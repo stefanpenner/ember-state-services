@@ -109,7 +109,7 @@ test('teardownStateFor properly clears a state for a key', function(assert) {
 
 test('Creating a state service with an unknown StateFactory throws error', function(assert) {
   assert.expect(1);
-  
+
   Service = Ember.Service.extend(StateMixin, {
     stateName: 'test-state-that-does-not-exist',
     container: container
@@ -118,4 +118,22 @@ test('Creating a state service with an unknown StateFactory throws error', funct
   assert.throws(function() {
     Service.create();
   }, TypeError, 'Unknown StateFactory: `test-state-that-does-not-exist`');
+});
+
+test('key is stored in content in state', function(assert) {
+  assert.expect(1);
+
+  subject.set('model', 'person');
+
+  assert.equal(subject.get('state.content'), 'person');
+});
+
+test('content property name can be configured in service', function(assert) {
+  assert.expect(1);
+
+  Service.keyPropertyName = "key";
+
+  subject.set('model', 'person');
+
+  assert.equal(subject.get('state.key'), 'person');
 });
