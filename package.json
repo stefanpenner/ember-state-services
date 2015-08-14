@@ -1,7 +1,7 @@
 {
   "name": "ember-state-services",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "1.0.0",
+  "description": "Enable Ember services to manage state for consumers, such as components",
   "directories": {
     "doc": "doc",
     "test": "tests"
