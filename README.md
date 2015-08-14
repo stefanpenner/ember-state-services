@@ -1,7 +1,7 @@
 # ember-state-services [![Build Status](https://travis-ci.org/stefanpenner/ember-state-services.svg)](https://travis-ci.org/stefanpenner/ember-state-services)
 
 This addon introduces a state management pattern using services, which allows them to serve
-multiple consumers (often components). 
+multiple consumers (often components).
 
 An example could be a master/detail experience where the detail view is a
 component which allows editing of content. It would be unfortunate if
@@ -74,7 +74,7 @@ export default Ember.Component.extend({
 
 ## Installation
 
-* `npm install --save ember-state-services`
+* `ember install ember-state-services`
 
 ## Example
 
