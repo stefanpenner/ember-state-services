@@ -2,7 +2,7 @@
 <div class="master-detail">
   <div class='master'>
     <ul>
-      {{#each email in model}}
+      {{#each model as |email|}}
         <li>
           {{#link-to 'email' email}} {{email.subject}} {{/link-to}}
         </li>

@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import StateMixin from 'ember-state-services/mixin';
 
-let State;
 let Service;
 let registry;
 let container;
