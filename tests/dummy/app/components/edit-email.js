@@ -3,7 +3,7 @@ import stateFor from 'ember-state-services/state-for';
 
 export default Ember.Component.extend({
   tagName: 'form',
-  data: stateFor('edit-email', { key: 'email.id' }),
+  data: stateFor('edit-email', { key: 'email' }),
 
   actions: {
     save: function() {
