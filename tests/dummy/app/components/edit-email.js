@@ -1,11 +1,9 @@
 import Ember from 'ember';
+import stateFor from 'ember-state-services/state-for';
 
 export default Ember.Component.extend({
   tagName: 'form',
-  editEmailService: Ember.inject.service('edit-email'),
-  data: Ember.computed('email', function() {
-    return this.get('editEmailService').stateFor(this.get('email'));
-  }).readOnly(),
+  data: stateFor('edit-email', { key: 'email' }),
 
   actions: {
     save: function() {
