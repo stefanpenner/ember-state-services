@@ -3,7 +3,8 @@ import Ember from 'ember';
 var {
   computed,
   assert,
-  typeOf
+  typeOf,
+  MapWithDefault
 } = Ember;
 
 var states = {};
@@ -22,8 +23,26 @@ function createStates(container, stateName) {
     throw new TypeError(`Unknown StateFactory: \`${stateContainerName}\``);
   }
 
-  states[stateName] = new Ember.MapWithDefault({
-    defaultValue: () => buildDefaultState.call(this, StateFactory)
+  /*
+  * Overriding the default get function to support the defaultValue function
+  * recieving a custom context.
+  * Taken from:
+  * https://github.com/emberjs/ember.js/blob/6a9c789295/packages/ember-metal/lib/map.js#L467
+  */
+  MapWithDefault.prototype.get = function(key, context) {
+    var hasValue = this.has(key);
+
+    if (hasValue) {
+      return this._super$get(key);
+    } else {
+      var defaultValue = this.defaultValue.call(context, key);
+      this.set(key, defaultValue);
+      return defaultValue;
+    }
+  };
+
+  states[stateName] = new MapWithDefault({
+    defaultValue: function() { return buildDefaultState.call(this, StateFactory); }
   });
 
   return states[stateName];
@@ -70,11 +89,11 @@ export default function stateFor(stateName, options) {
       `, this.container || container);
 
     if (states[stateName]) {
-      return states[stateName].get(this.get(key));
+      return states[stateName].get(this.get(key), this);
     }
 
     return createStates
               .apply(this, [container || this.container, stateName])
-              .get(this.get(key));
+              .get(this.get(key), this);
   });
 }

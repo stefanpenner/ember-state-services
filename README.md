@@ -1,4 +1,4 @@
-# ember-state-services [![Build Status](https://travis-ci.org/stefanpenner/ember-state-services.svg)](https://travis-ci.org/stefanpenner/ember-state-services)
+# Ember State Services [![Build Status](https://travis-ci.org/stefanpenner/ember-state-services.svg)](https://travis-ci.org/stefanpenner/ember-state-services)
 
 This addon introduces a state management pattern using services, which allows them to serve
 multiple consumers (often components).
@@ -8,57 +8,47 @@ component which allows editing of content. It would be unfortunate if
 navigating would lose un-saved changes; it would also be unfortunate if the
 state between the edit components were to leak between each other. Instead, the service issues a unique state per reference key, which keeps management safe and easy.
 
-### Collaborators:
+## Installation
 
-* services: singletons which maintain and issue out states to consumers
-* states: non-singletons, typically key'd to a model which provide ephemeral state.
+```shell
+ember install ember-state-services
+```
 
 ## Usage
 
-### service
+### State file
 
 ```js
-// app/services/email-edit.js
+/*
+ * First create a state file that returns an object within app/states/<STATE_NAME>.js
+ */
 import Ember from 'ember';
-import StateMixin from 'ember-state-services/mixin';
 
-export default Ember.Object.extend(StateMixin, {
-  stateName: 'email-edit'
-});
+export default Ember.Object.extend();
 ```
 
-### state
-
-```js
-// app/states/email-edit.js
-import BufferedProxy from 'ember-buffered-proxy/proxy';
-
-export default BufferedProxy.extend();
-```
-
-learn more about buffered proxy: https://github.com/yapplabs/ember-buffered-proxy
-
-### component
+### Component
 
 ```js
 import Ember from 'ember';
+import stateFor from 'emebr-state-services/state-for';
 
 export default Ember.Component.extend({
   tagName: 'form',
-  editEmailService: Ember.inject.service('email-edit'),
-  state: Ember.computed('email', function() {
-    return this.editEmailService.stateFor(this.get('email'));
-  }).readOnly(),
+
+  /*
+  * stateFor returns a computed property that returns a given
+  * state object based on the 'email.id' property. Whenever email.id
+  * changes a new state object will be returned. This allows us to create
+  * components that maintain a consistent state even after being destroyed but
+  * does not share that state across keys.
+  */
+  data: stateFor('<STATE_NAME>', 'email.id'),
 
   actions: {
-    save() {
-      this.get('state').applyChanges();
-      this.sendAction('on-save', this.get('email'));
-    },
-
-    cancel() {
-      this.get('state').discardChanges();
-      this.sendAction('on-cancel', this.get('email'));
+    submitForm() {
+      var stateData = this.get('data');
+      this.set('model', stateData);
     }
   }
 });
@@ -67,14 +57,42 @@ export default Ember.Component.extend({
 ### template
 
 ```js
-<label>Subject: {{input value=state.subject}}</label><br>
-<label>from:   {{input value=state.from}}</label><br>
-<label>body:   {{textarea value=state.body}}</label><br>
+<label>Subject: {{input value=data.subject}}</label><br>
+<label>from:   {{input value=data.from}}</label><br>
+<label>body:   {{textarea value=data.body}}</label><br>
+<button {{action 'submitForm'}}>Submit Form</button>
 ```
 
-## Installation
+## Advanced
 
-* `ember install ember-state-services`
+### Setting initial state
+
+```js
+import Ember from 'ember';
+
+var MyStateObject = Ember.Object.extend();
+
+MyStateObject.reopenClass({
+  initialState() {
+    return {
+      foo: 'bar',
+      hello: 'world'
+    };
+  }
+});
+
+export default MyStateObject;
+```
+
+### Using ember-buffered-proxy
+
+```js
+import BufferedProxy from 'ember-buffered-proxy/proxy';
+
+export default BufferedProxy.extend();
+```
+
+Learn more about buffered proxy: https://github.com/yapplabs/ember-buffered-proxy
 
 ## Example
 

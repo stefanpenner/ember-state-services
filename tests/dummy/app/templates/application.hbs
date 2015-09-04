@@ -1,16 +1,1 @@
-{{#link-to 'index'}}<h2>State Demo</h2>{{/link-to}}
-<div class="master-detail">
-  <div class='master'>
-    <ul>
-      {{#each model as |email|}}
-        <li>
-          {{#link-to 'email' email}} {{email.subject}} {{/link-to}}
-        </li>
-      {{/each}}
-    </ul>
-  </div>
-
-  <div class='detail'>
-    {{outlet}}
-  </div>
-</div>
+{{routable-application}}

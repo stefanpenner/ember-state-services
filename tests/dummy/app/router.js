@@ -6,9 +6,12 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.resource('email', { path: '/email/:email_id' }, function() {
-    this.route('edit');
+
+  this.route('todos', { path: '/todos/:status' }, function() {
+    this.route('todo-message',  { path: '/:todo-id' } );
   });
+
+  this.route('todos.new', { path: '/todos/new' });
 });
 
 export default Router;
