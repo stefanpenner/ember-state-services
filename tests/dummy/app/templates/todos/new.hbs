@@ -1,1 +1,15 @@
-laksdjl
+<div class="pure-u-1 new-todo-form" >
+  <form class="pure-form pure-form-stacked">
+    <fieldset>
+        <legend>New Todo</legend>
+
+        <label for="email">Title</label>
+        {{input value=title placeholder="Title"}}
+
+        <label for="password">Body</label>
+        {{textarea value=body}}
+
+        <button type="submit" class="pure-button pure-button-primary" {{action 'createTodo'}}>Create Todo</button>
+    </fieldset>
+  </form>
+</div>

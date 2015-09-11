@@ -2,8 +2,9 @@ import Ember from 'ember';
 import stateFor from 'ember-state-services/state-for';
 
 export default Ember.Component.extend({
-
   data: stateFor('todos', { key: 'todo.id' }),
+
+  activeTodo: Ember.computed.equal('todo.status', 'active'),
 
   actions: {
     edit() {
@@ -19,18 +20,15 @@ export default Ember.Component.extend({
       this.get('data').discardChanges();
     },
 
-    markAs(status) {
-      switch(status) {
-        case 'active':
-          this.set('todo.status', 'completed');
-          break;
-        case 'completed':
-        case 'trash':
-          this.set('todo.status', 'active');
-          break;
-      }
-
+    trash() {
+      this.set('todo.status', 'trash');
       this.get('data').discardChanges();
+      this.attrs.transitionAction('active');
+    },
+
+    restore() {
+      this.set('todo.status', 'active');
+      this.attrs.transitionAction('trash');
     }
   }
 });

@@ -1,13 +1,24 @@
-.master-detail {
-  display: flex;
-}
-
 a.active > .email-item {
   background-color: #EEE;
 }
 
-textarea {
+textarea, input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+}
+
+textarea {
+  height: 200px;
+}
+
+.pure-menu-link.active {
+  background: rgb(55, 60, 90);
+}
+
+.button-group {
+  padding-top: 10px;
+}
+
+.new-todo-form {
+  margin-left: -310px;
+  margin-top: 50px;
 }
