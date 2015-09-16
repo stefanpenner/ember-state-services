@@ -1,4 +1,4 @@
-a.active > .email-item {
+a.active > .todo-item {
   background-color: #EEE;
 }
 
@@ -10,10 +10,6 @@ textarea {
   height: 200px;
 }
 
-.pure-menu-link.active {
-  background: rgb(55, 60, 90);
-}
-
 .button-group {
   padding-top: 10px;
 }
@@ -22,3 +18,88 @@ textarea {
   margin-left: -310px;
   margin-top: 50px;
 }
+
+.todo-count {
+  color: rgb(75, 113, 151);
+}
+
+.todo-label-personal,
+.todo-label-work,
+.todo-label-travel {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-right: 0.5em;
+  border-radius: 3px;
+}
+.todo-label-personal {
+  background: #ffc94c;
+}
+.todo-label-work {
+  background: #41ccb4;
+}
+.todo-label-travel {
+  background: #40c365;
+}
+
+.todo-item {
+  padding: 0.9em 1em;
+  border-bottom: 1px solid #ddd;
+  border-left: 6px solid transparent;
+}
+.todo-avatar {
+  border-radius: 3px;
+  margin-right: 0.5em;
+}
+.todo-name,
+.todo-subject {
+  margin: 0;
+}
+.todo-name {
+  text-transform: uppercase;
+  color: #999;
+}
+.todo-desc {
+  font-size: 80%;
+  margin: 0.4em 0;
+}
+
+.todo-item-selected {
+  background: #eee;
+}
+.todo-item-unread {
+  border-left: 6px solid #1b98f8;
+}
+
+.todo-content-header, .todo-content-body, .todo-content-footer {
+  padding: 1em 2em;
+}
+.todo-content-header {
+  border-bottom: 1px solid #ddd;
+}
+
+.todo-content-title {
+  margin: 0.5em 0 0;
+}
+.todo-content-subtitle {
+  font-size: 1em;
+  margin: 0;
+  font-weight: normal;
+}
+.todo-content-subtitle span {
+  color: #999;
+}
+.todo-content-controls {
+  margin-top: 2em;
+  text-align: right;
+}
+.todo-content-controls .secondary-button {
+  margin-bottom: 0.3em;
+}
+
+.todo-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+

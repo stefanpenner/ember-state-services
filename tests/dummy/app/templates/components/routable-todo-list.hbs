@@ -2,11 +2,11 @@
   {{#each todos as |todo|}}
 
     {{#link-to 'todos.todo-message' todo.id}}
-      <div class="email-item pure-g">
+      <div class="todo-item pure-g">
           <div class="pure-u">
-              <h5 class="email-name">{{todo.from.name}}</h5>
-              <h4 class="email-subject">{{truncate todo.title 35}}</h4>
-              <p class="email-desc">
+              <h5 class="todo-name">{{todo.from.name}}</h5>
+              <h4 class="todo-subject">{{truncate todo.title 35}}</h4>
+              <p class="todo-desc">
                 {{truncate todo.body}}
               </p>
           </div>

@@ -1,8 +1,8 @@
 <div class="pure-u-1">
-  <div class="email-content">
-    <div class="email-content-header pure-u-1">
+  <div class="todo-content">
+    <div class="todo-content-header pure-u-1">
       <div class="pure-u-1">
-        <h1 class="email-content-title">
+        <h1 class="todo-content-title">
           {{#if data.isEditing}}
             {{input value=data.title}}
           {{else}}
@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="email-content-body">
+    <div class="todo-content-body">
       {{#if data.isEditing}}
         {{textarea value=data.body rows="10"}}
         <button class="pure-button pure-button-primary" {{action 'update'}}>Update Todo</button>
