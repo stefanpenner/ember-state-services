@@ -87,25 +87,14 @@ export default MyStateObject;
 ### Using ember-buffered-proxy
 
 ```js
-import BufferedProxy from 'ember-buffered-proxy/proxy';
+import { BufferedProxy } from 'ember-buffered-proxy/proxy';
 
 export default BufferedProxy.extend();
 ```
 
 Learn more about buffered proxy: https://github.com/yapplabs/ember-buffered-proxy
 
-## Example
+## Example Demo
 
 * `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+* Then visit: http://localhost:4200 in your browser
