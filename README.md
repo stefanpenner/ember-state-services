@@ -43,7 +43,7 @@ export default Ember.Component.extend({
   * components that maintain a consistent state even after being destroyed but
   * does not share that state across keys.
   */
-  data: stateFor('<STATE_NAME>', 'email.id'),
+  data: stateFor('<STATE_NAME>', 'email'),
 
   actions: {
     submitForm() {

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import stateFor from 'ember-state-services/state-for';
 
 export default Ember.Component.extend({
-  data: stateFor('todos', { key: 'todo.id' }),
+  data: stateFor('todos', 'todo'),
 
   activeTodo: Ember.computed.equal('todo.status', 'active'),
 

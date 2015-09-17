@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import CustomMapWithDefault from './custom-map-with-default';
+import WeakMap from 'ember-weakmap/weak-map';
 
 var {
   computed,
@@ -7,75 +7,67 @@ var {
   typeOf
 } = Ember;
 
-var states = {};
+/*
+ * Each key in this POJO is a name of a state with the value
+ * for that key being a WeakMap.
+ */
+var stateHashMap = {};
 
 /*
-* Create the states object for a given stateName.
+* Returns a computed property if called like: stateFor('state-name', 'property-name') or
+* returns the WeakMap if called like stateFor('state-name'). The most common case will be 
+* the former but the latter allows advanced options like:
 *
-* @param container {object} container to lookup the state factory on
-* @param stateName {string} state name which is also the name of the factory
+* stateFor('state-name').delete(this.get('property-name');
+* stateFor('state-name').has(this.get('some-other-prop');
+* stateFor('state-name').set(this.get('property-name'), {}); // Overrides the state
+* stateFor('state-name').get(this.get('property-name'));
 */
-function createStates(container, stateName) {
-  let stateContainerName = `state:${stateName}`;
-  let StateFactory       = container.lookupFactory(stateContainerName);
-
-  if (!StateFactory) {
-    throw new TypeError(`Unknown StateFactory: \`${stateContainerName}\``);
+export default function stateFor(stateName, propertyName) {
+  if (!propertyName) {
+    return stateHashMap[stateName];
   }
 
-  states[stateName] = new CustomMapWithDefault({
-    defaultValue: function() { return buildDefaultState.call(this, StateFactory); }
-  });
+  assert('The second argument must be a string', typeOf(propertyName) === 'string');
 
-  return states[stateName];
-}
+  return computed(propertyName, function() {
+    let propertyValue = this.get(propertyName);
 
-/*
-* When creating the state instance we use `initialState` method
-* on the state class to build its initial state. If it not
-* specified then {} is used as the default state.
-*
-* @param Factory {StateFactoryClass} state factory from the container
-* @return {stateInstance} state instance object from the factory
-*/
-function buildDefaultState(Factory) {
-  let defaultState = {};
-
-  if (typeOf(Factory.initialState) === 'function') {
-    defaultState = Factory.initialState.call(this);
-  }
-
-  return Factory.create(defaultState);
-}
-
-/*
-* Returns a computed property that returns state based off of a dynamic key.
-*
-* @param stateName {string} name of the state factory which is located in /states/<stateName>.js
-* @param options {object}
-* @param {string} options.key - required - the dynamic state key
-* @param {object} options.container - optional - container reference
-* @return {computed property}
-*/
-export default function stateFor(stateName, options) {
-  var { key, container } = options;
-
-  assert(`
-    Missing \`key\` property within the second argument. You passed: ${JSON.stringify(options)}
-    `, key);
-
-  return computed(key, function() {
-    assert(`
-      Could not find the container on \`this\` or passed in via:
-      stateFor('${stateName}', { key: ${key}, container: <pass container here> })
-      `, this.container || container);
-
-    if (states[stateName]) {
-      return states[stateName].get(this.get(key), this);
+    if (!stateHashMap[stateName]) {
+      stateHashMap[stateName] = new WeakMap();
     }
 
-    return createStates
-              .apply(this, [container || this.container, stateName])
-              .get(this.get(key), this);
+    let stateWeakMap = stateHashMap[stateName];
+
+    if (!stateWeakMap.has(propertyValue)) {
+      let newState = createStateFor(this, stateName, this.container);
+      stateWeakMap.set(propertyValue, newState);
+    }
+
+    return stateWeakMap.get(propertyValue);
   });
+}
+
+/*
+ * Looks up the state factory on the container and sets initial state
+ * on the instance if desired.
+ */
+function createStateFor(context, stateName, container) {
+  let defaultState  = {};
+  let containerName = `state:${stateName}`;
+  let StateFactory  = container.lookupFactory(containerName);
+
+  if (!StateFactory) {
+    throw new TypeError(`Unknown StateFactory: ${containerName}`);
+  }
+
+  if (typeOf(StateFactory.initialState) === 'function') {
+    defaultState = StateFactory.initialState.call(context);
+  }
+
+  if (StateFactory.create) {
+    return StateFactory.create(defaultState);
+  }
+
+  return StateFactory;
 }
