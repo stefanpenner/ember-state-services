@@ -71,5 +71,5 @@ function createStateFor(context, stateName, container) {
     return StateFactory.create(defaultState);
   }
 
-  return StateFactory;
+  return Ember.Object.create(StateFactory);
 }

@@ -10,6 +10,10 @@ textarea {
   height: 200px;
 }
 
+.drafting {
+  color: red;
+}
+
 .button-group {
   padding-top: 10px;
 }
