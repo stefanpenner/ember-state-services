@@ -59,7 +59,7 @@ export default Ember.Component.extend({
 });
 ```
 
-### template
+### Template
 
 ```js
 <label>Subject: {{input value=data.subject}}</label><br>
