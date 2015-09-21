@@ -1,0 +1,20 @@
+<div id="list" class="pure-u-1">
+  {{#each todos as |todo|}}
+
+    {{#link-to 'todos.todo-message' todo.id}}
+      <div class="todo-item pure-g">
+          <div class="pure-u">
+              <h5 class="todo-name">{{todo.from.name}}</h5>
+              <h4 class="todo-subject">{{truncate todo.title 35}}</h4>
+              <p class="todo-desc">
+                {{truncate todo.body}}
+              </p>
+              {{draft-indicator todo=todo}}
+          </div>
+      </div>
+    {{/link-to}}
+
+  {{/each}}
+</div>
+
+{{outlet}}

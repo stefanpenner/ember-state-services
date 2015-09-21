@@ -1,0 +1,34 @@
+<div class="pure-u-1">
+  <div class="todo-content">
+    <div class="todo-content-header pure-u-1">
+      <div class="pure-u-1">
+        <h1 class="todo-content-title">
+          {{#if data.isEditing}}
+            {{input value=data.title}}
+          {{else}}
+            {{todo.title}}
+          {{/if}}
+        </h1>
+      </div>
+    </div>
+
+    <div class="todo-content-body">
+      {{#if data.isEditing}}
+        {{textarea value=data.body rows="10"}}
+        <button class="pure-button pure-button-primary" {{action 'update'}}>Update Todo</button>
+        <button class="pure-button" {{action 'cancel'}}>Cancel</button>
+      {{else}}
+        {{todo.body}}
+
+        <div class="button-group">
+          {{#if activeTodo}}
+            <button class="pure-button pure-button-primary" {{action 'edit'}}>Edit</button>
+            <button class="pure-button" {{action 'trash'}}>Trash</button>
+          {{else}}
+            <button class="pure-button" {{action 'restore'}}>Restore Todo</button>
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div id="layout" class="content pure-g">
+  <div id="nav" class="pure-u">
+    <div class="nav-inner">
+      {{#link-to 'todos.new'}}
+        <button class="primary-button pure-button">New Todo</button>
+      {{/link-to}}
+
+      <div class="pure-menu">
+          <ul class="pure-menu-list">
+              <li class="pure-menu-item">{{link-to 'In Progress' 'todos' 'active' classNames='pure-menu-link'}}</li>
+              <li class="pure-menu-item">{{link-to 'Trash' 'todos' 'trash' classNames='pure-menu-link'}}</li>
+          </ul>
+      </div>
+    </div>
+  </div>
+
+  {{outlet}}
+</div>
