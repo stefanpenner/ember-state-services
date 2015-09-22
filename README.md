@@ -5,7 +5,7 @@
 [![Ember Observer Score](http://emberobserver.com/badges/ember-state-services.svg)](http://emberobserver.com/addons/ember-state-services)
 [![npm version](https://badge.fury.io/js/ember-state-services.svg)](http://badge.fury.io/js/ember-state-services)
 
-This addon introduces a state management pattern for your ambious applications.
+This addon introduces a state management pattern for your ambitious applications.
 
 State management is one of the most complex apsects of large application design and when done wrong often leads to bugs and errors. EmberJS contains 2 high-level avenues for storing state: controllers (long-term state) and components (short-term state). Controllers are singletons and any state you set on them will stay there until your application is reloaded or you override the previous value. Components on the other hand are created and destroyed as they enter/leave the DOM and any state that is set on them will be removed/reset each time they are recreated. As you build more complex applications you will find yourself needing a way to have some sort of middle ground solution. Something that has properties of both long-term state and short-term state. This is what ember-state-services sets out to provide.
 
