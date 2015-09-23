@@ -32,10 +32,14 @@ export default function stateFor(stateName, propertyName) {
   return computed(propertyName, function() {
     let propertyValue = this.get(propertyName);
 
-    assert(`The property '${propertyName}' must be an object, function, or array`,
-      propertyValue &&
-      (typeof propertyValue === 'object' || typeof propertyValue === 'function')
-    );
+    // if the propertyValue is null/undefined we simply return null/undefined
+    if (!propertyValue || typeof propertyValue === 'undefined') {
+      return propertyValue;
+    }
+
+    if (typeof propertyValue !== 'object' && typeof propertyValue !== 'function') {
+      throw new TypeError('The state key must resolve to a non primitive value');
+    }
 
     if (!weakMaps[stateName]) {
       weakMaps[stateName] = new WeakMap();
