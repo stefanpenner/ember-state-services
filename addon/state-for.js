@@ -14,7 +14,7 @@ var weakMaps = {};
 
 /*
 * Returns a computed property if called like: stateFor('state-name', 'property-name') or
-* returns the WeakMap if called like stateFor('state-name'). The most common case will be 
+* returns the WeakMap if called like stateFor('state-name'). The most common case will be
 * the former but the latter allows advanced options like:
 *
 * stateFor('state-name').delete(this.get('property-name'));
@@ -27,10 +27,15 @@ export default function stateFor(stateName, propertyName) {
     return weakMaps[stateName];
   }
 
-  assert('The second argument must be a string', typeof(propertyName) === 'string');
+  assert('The second argument must be a string', typeof propertyName  === 'string');
 
   return computed(propertyName, function() {
     let propertyValue = this.get(propertyName);
+
+    assert(`The property '${propertyName}' must be an object, function, or array`,
+      propertyValue &&
+      (typeof propertyValue === 'object' || typeof propertyValue === 'function')
+    );
 
     if (!weakMaps[stateName]) {
       weakMaps[stateName] = new WeakMap();
