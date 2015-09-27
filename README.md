@@ -36,7 +36,7 @@ export default Ember.Object.extend();
 
 ```js
 import Ember from 'ember';
-import stateFor from 'emebr-state-services/state-for';
+import stateFor from 'ember-state-services/state-for';
 
 export default Ember.Component.extend({
   tagName: 'form',
