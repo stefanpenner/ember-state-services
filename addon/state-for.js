@@ -3,42 +3,51 @@ import WeakMap from 'ember-weakmap/weak-map';
 
 var {
   computed,
-  assert
+  assert,
+  guidFor,
+  typeOf
 } = Ember;
 
 /*
- * Each key in this POJO is a name of a state with the value
- * for that key being a WeakMap.
- */
+* Each key in this POJO is a name of a state with its value being a WeakMap.
+*
+* {
+*    'my-state-name': WeakMapFoo,
+*    'my-other-name': WeakMapBar
+* }
+*/
 var weakMaps = {};
 
 /*
-* Returns a computed property if called like: stateFor('state-name', 'property-name') or
-* returns the WeakMap if called like stateFor('state-name'). The most common case will be
-* the former but the latter allows advanced options like:
+* StateFor will return a computed property that will contain the state 'bucket'
+* which is assoicated with the 'dependent-key-path' property. An optional third
+* argument can be passed to give a more granular division of state.
 *
-* stateFor('state-name').delete(this.get('property-name'));
-* stateFor('state-name').has(this.get('some-other-prop'));
-* stateFor('state-name').set(this.get('property-name'), {}); // Overrides the state
-* stateFor('state-name').get(this.get('property-name'));
+* stateFor('state-name', 'dependent-key-path');
+* stateFor('state-name', 'dependent-key-path',  {
+*    secondaryKeys: ['foo', 'bar']
+* });
 */
-export default function stateFor(stateName, propertyName) {
-  if (!propertyName) {
+export default function stateFor(stateName, dependentKeyPath, secondaryProps = {}) {
+  if (!dependentKeyPath) {
     return weakMaps[stateName];
   }
 
-  assert('The second argument must be a string', typeof propertyName  === 'string');
+  assert('The property name must be a string', typeof dependentKeyPath === 'string');
+  assert('The secondary properties must be an object', !secondaryProps || typeof secondaryProps === 'object');
 
-  return computed(propertyName, function() {
-    let propertyValue = this.get(propertyName);
-
-    // if the propertyValue is null/undefined we simply return null/undefined
-    if (!propertyValue || typeof propertyValue === 'undefined') {
-      return propertyValue;
-    }
+  return computed(dependentKeyPath, function() {
+    let propertyValue     = this.get(dependentKeyPath);
+    let { secondaryKeys } = secondaryProps;
 
     if (typeof propertyValue !== 'object' && typeof propertyValue !== 'function') {
-      throw new TypeError('The state key must resolve to a non primitive value');
+      throw new TypeError(
+        `The property value for ${dependentKeyPath} resolved to ${propertyValue}.
+        ${dependentKeyPath} must resolve to an object, array, or function`
+      );
+    }
+    else if (!propertyValue || typeof propertyValue === 'undefined') {
+      return propertyValue;
     }
 
     if (!weakMaps[stateName]) {
@@ -48,11 +57,13 @@ export default function stateFor(stateName, propertyName) {
     let state = weakMaps[stateName];
 
     if (!state.has(propertyValue)) {
-      let newState = createStateFor(this, stateName, this.container);
-      state.set(propertyValue, newState);
+      let secondaryMap = Ember.Map.create();
+
+      secondaryMap.set(guidString(secondaryKeys), createStateFor(this, stateName));
+      state.set(propertyValue, secondaryMap);
     }
 
-    return state.get(propertyValue);
+    return state.get(propertyValue).get(guidString(secondaryKeys));
   });
 }
 
@@ -60,25 +71,36 @@ export default function stateFor(stateName, propertyName) {
  * Looks up the state factory on the container and sets initial state
  * on the instance if desired.
  */
-function createStateFor(context, stateName, container) {
+function createStateFor(context, stateName) {
   let defaultState  = {};
   let containerName = `state:${stateName}`;
-  let StateFactory  = container.lookupFactory(containerName);
+  let StateFactory  = context.container.lookupFactory(containerName);
 
   if (!StateFactory) {
-    throw new TypeError(`Unknown StateFactory: ${containerName}`);
+    return Object.create(null); // default to a blank object if no factory was found.
   }
 
-  if (typeof(StateFactory.initialState) === 'function') {
+  if (typeOf(StateFactory.initialState) === 'function') {
     defaultState = StateFactory.initialState.call(context);
-  }
-  else if (StateFactory.initialState) {
-    throw new TypeError('initialState property must be a function');
   }
 
   if (StateFactory.create) {
     return StateFactory.create(defaultState);
   }
 
-  return Ember.Object.create(StateFactory);
+  return Object.create(StateFactory);
+}
+
+/*
+* Creates a GUID for each member of a list and then
+* concats the string.
+*/
+function guidString(listOfNonGuids) {
+  if (!Array.isArray(listOfNonGuids)) {
+    return '';
+  }
+
+  return listOfNonGuids
+          .map(item => guidFor(item))
+          .reduce((previousValue, item) => `${previousValue}${item}`);
 }
