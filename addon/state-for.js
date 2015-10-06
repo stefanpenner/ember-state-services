@@ -54,17 +54,18 @@ export default function stateFor(stateName, dependentKeyPath, secondaryProps = {
     }
 
     let state = weakMaps[stateName];
+    let guid  = guidString(secondaryKeys);
 
     if (!state.has(propertyValue)) {
       state.set(propertyValue, {
-        [guidString(secondaryKeys)]: createStateFor(this, stateName)
+        [guid]: createStateFor(this, stateName)
       });
     }
-    else if(!state.get(propertyValue)[guidString(secondaryKeys)]) {
-      state.get(propertyValue)[guidString(secondaryKeys)] = createStateFor(this, stateName);
+    else if(!state.get(propertyValue)[guid]) {
+      state.get(propertyValue)[guid] = createStateFor(this, stateName);
     }
 
-    return state.get(propertyValue)[guidString(secondaryKeys)];
+    return state.get(propertyValue)[guid];
   });
 }
 
