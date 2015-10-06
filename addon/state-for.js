@@ -24,7 +24,7 @@ var weakMaps = {};
 *
 * stateFor('state-name', 'dependent-key-path');
 * stateFor('state-name', 'dependent-key-path',  {
-*    secondaryKeys: ['foo', 'bar']
+*    namespace: ['foo', 'bar']
 * });
 */
 export default function stateFor(stateName, dependentKeyPath, secondaryProps = {}) {
@@ -37,7 +37,7 @@ export default function stateFor(stateName, dependentKeyPath, secondaryProps = {
 
   return computed(dependentKeyPath, function() {
     let propertyValue     = this.get(dependentKeyPath);
-    let { secondaryKeys } = secondaryProps;
+    let { namespace } = secondaryProps;
 
     if (typeof propertyValue !== 'object' && typeof propertyValue !== 'function') {
       throw new TypeError(
@@ -54,7 +54,7 @@ export default function stateFor(stateName, dependentKeyPath, secondaryProps = {
     }
 
     let state = weakMaps[stateName];
-    let guid  = guidString(secondaryKeys);
+    let guid  = guidString(namespace);
 
     if (!state.has(propertyValue)) {
       state.set(propertyValue, {

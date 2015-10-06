@@ -110,7 +110,7 @@ test('that stateFor accepts a third argument', function(assert) {
     }),
 
     dataB: stateFor('test-state-pojo', 'model', {
-      secondaryKeys: ['foo', 'bar']
+      namespace: ['foo', 'bar']
     })
   }).create();
 
