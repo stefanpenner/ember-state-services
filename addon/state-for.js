@@ -4,7 +4,6 @@ import WeakMap from 'ember-weakmap/weak-map';
 var {
   computed,
   assert,
-  guidFor,
   typeOf
 } = Ember;
 
@@ -57,13 +56,15 @@ export default function stateFor(stateName, dependentKeyPath, secondaryProps = {
     let state = weakMaps[stateName];
 
     if (!state.has(propertyValue)) {
-      let secondaryMap = Ember.Map.create();
-
-      secondaryMap.set(guidString(secondaryKeys), createStateFor(this, stateName));
-      state.set(propertyValue, secondaryMap);
+      state.set(propertyValue, {
+        [guidString(secondaryKeys)]: createStateFor(this, stateName)
+      });
+    }
+    else if(!state.get(propertyValue)[guidString(secondaryKeys)]) {
+      state.get(propertyValue)[guidString(secondaryKeys)] = createStateFor(this, stateName);
     }
 
-    return state.get(propertyValue).get(guidString(secondaryKeys));
+    return state.get(propertyValue)[guidString(secondaryKeys)];
   });
 }
 
@@ -77,7 +78,7 @@ function createStateFor(context, stateName) {
   let StateFactory  = context.container.lookupFactory(containerName);
 
   if (!StateFactory) {
-    return Object.create(null); // default to a blank object if no factory was found.
+    return {}; // default to a blank object if no factory was found.
   }
 
   if (typeOf(StateFactory.initialState) === 'function') {
@@ -92,15 +93,12 @@ function createStateFor(context, stateName) {
 }
 
 /*
-* Creates a GUID for each member of a list and then
-* concats the string.
+* Creates a unique string (key) from an array
 */
 function guidString(listOfNonGuids) {
   if (!Array.isArray(listOfNonGuids)) {
     return '';
   }
 
-  return listOfNonGuids
-          .map(item => guidFor(item))
-          .reduce((previousValue, item) => `${previousValue}${item}`);
+  return btoa(listOfNonGuids);
 }
