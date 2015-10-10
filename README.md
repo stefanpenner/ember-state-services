@@ -11,6 +11,8 @@ State management is one of the most complex apsects of large application design 
 
 An example could be a master/detail experience where the detail view is a component which allows editing of content. It would be unfortunate if navigating would lose un-saved changes (short-term state); it would also be unfortunate if the state between the edit components were to leak between each other (long-term state). Instead, the addon issues a unique state per reference key, which keeps management safe and easy.
 
+[![](https://i.vimeocdn.com/video/539171813_640x358.jpg)](https://vimeo.com/141974064)
+
 ## Installation
 
 ```shell
