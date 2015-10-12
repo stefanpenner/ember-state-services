@@ -44,18 +44,20 @@ export default Ember.Component.extend({
   tagName: 'form',
 
   /*
-  * stateFor returns a computed property that returns a given
+  * stateFor returns a computed property that provides a given
   * state object based on the 'email' property. Whenever email
-  * changes a new state object will be returned. This allows us to create
-  * components that maintain a consistent state even after being destroyed but
-  * does not share that state across keys.
+  * changes a new state object will be returned. 
+  *
+  * This allows us to create private state, accessible only to those
+  * with access to the given model (email in this case) and the state
+  * bucket (<STATE_NAME> in this case).
   */
   data: stateFor('<STATE_NAME>', 'email'),
 
   actions: {
     submitForm() {
-      var stateData = this.get('data');
-      this.set('model', stateData);
+      // apply changes to the email model
+      this.get('email').setProperties(this.get('data'));
     }
   }
 });
