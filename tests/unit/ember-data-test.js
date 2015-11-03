@@ -2,8 +2,6 @@ import Ember from 'ember';
 import { test, moduleForModel } from 'ember-qunit';
 import stateFor from 'ember-state-services/state-for';
 
-let registry  = new Ember.Registry();
-let container = new Ember.Container(registry);
 let mockStatePOJO = { sample: 'example' };
 const registryOpts = { singleton: true, instantiate: false };
 
@@ -15,12 +13,18 @@ moduleForModel('user', {
 });
 
 test('that the key value can be an EmberData model', function(assert) {
-  var modelA = this.subject({
-    name: 'Bobby'
+  var store = this.store();
+  var modelA, modelB;
+
+  Ember.run(() => {
+    modelA = store.createRecord('user', {
+      name: 'Bobby'
+    });
+    modelB = store.createRecord('user', {
+      name: 'Lisa'
+    });
   });
-  var modelB = this.subject({
-    name: 'Lisa'
-  });
+
   let mockObject = Ember.Object.extend({
     data: stateFor('test-state-pojo', 'model')
   }).create({
