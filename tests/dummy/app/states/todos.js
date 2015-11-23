@@ -1,6 +1,8 @@
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
-BufferedProxy.reopenClass({
+const TodosProxy = BufferedProxy.extend();
+
+TodosProxy.reopenClass({
   initialState() {
     return {
       content: this.get('todo')
@@ -8,4 +10,4 @@ BufferedProxy.reopenClass({
   }
 });
 
-export default BufferedProxy.extend();
+export default TodosProxy;
