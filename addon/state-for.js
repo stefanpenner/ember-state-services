@@ -3,7 +3,7 @@ import WeakMap from 'ember-weakmap/weak-map';
 
 let {
   computed,
-  assert,
+  assert
 } = Ember;
 
 /*
