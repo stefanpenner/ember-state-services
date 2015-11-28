@@ -3,9 +3,9 @@ import BufferedProxy from 'ember-buffered-proxy/proxy';
 const TodosProxy = BufferedProxy.extend();
 
 TodosProxy.reopenClass({
-  initialState() {
+  initialState(consumerContext) {
     return {
-      content: this.get('todo')
+      content: consumerContext.get('todo')
     };
   }
 });

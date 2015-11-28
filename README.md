@@ -46,7 +46,7 @@ export default Ember.Component.extend({
   /*
   * stateFor returns a computed property that provides a given
   * state object based on the 'email' property. Whenever email
-  * changes a new state object will be returned. 
+  * changes a new state object will be returned.
   *
   * This allows us to create private state, accessible only to those
   * with access to the given model (email in this case) and the state
@@ -82,7 +82,7 @@ import Ember from 'ember';
 var MyStateObject = Ember.Object.extend();
 
 MyStateObject.reopenClass({
-  initialState() {
+  initialState(consumerContext) {
     return {
       foo: 'bar',
       hello: 'world'

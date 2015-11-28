@@ -1,16 +1,16 @@
 import Ember from 'ember';
 import WeakMap from 'ember-weakmap/weak-map';
 
-var {
+let {
   computed,
-  assert
+  assert,
 } = Ember;
 
 /*
  * Each key in this POJO is a name of a state with the value
  * for that key being a WeakMap.
  */
-var weakMaps = {};
+let weakMaps = {};
 
 /*
 * Returns a computed property if called like: stateFor('state-name', 'property-name') or
@@ -61,16 +61,16 @@ export default function stateFor(stateName, propertyName) {
  * on the instance if desired.
  */
 function createStateFor(context, stateName, container) {
-  let defaultState  = {};
-  let containerName = `state:${stateName}`;
-  let StateFactory  = container.lookupFactory(containerName);
+  let defaultState    = {};
+  const containerName = `state:${stateName}`;
+  let StateFactory    = container.lookupFactory(containerName);
 
   if (!StateFactory) {
-    throw new TypeError(`Unknown StateFactory: ${containerName}`);
+    StateFactory = {};
   }
 
-  if (typeof(StateFactory.initialState) === 'function') {
-    defaultState = StateFactory.initialState.call(context);
+  if (typeof StateFactory.initialState === 'function') {
+    defaultState = StateFactory.initialState.call(StateFactory, context);
   }
   else if (StateFactory.initialState) {
     throw new TypeError('initialState property must be a function');
