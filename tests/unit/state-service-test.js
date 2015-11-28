@@ -100,3 +100,34 @@ test('that state can be a simple POJO', function(assert) {
   mockObject.set('model', mockModelA);
   assert.equal(mockObject.get('data.sample'), 'foo-bar');
 });
+
+test('that stateFor accepts a third argument', function(assert) {
+  let mockObject = Ember.Object.extend({
+    container,
+    model: mockModelA,
+    dataA: stateFor('test-state-pojo', 'model', {
+      secondaryKeys: ['foo']
+    }),
+
+    dataB: stateFor('test-state-pojo', 'model', {
+      namespace: ['foo', 'bar']
+    })
+  }).create();
+
+  assert.expect(4);
+
+  mockObject.setProperties({
+    'dataA.sample': 'foo',
+    'dataB.sample': 'foobar'
+  });
+
+  mockObject.set('model', mockModelB);
+
+  assert.equal(mockObject.get('dataA.sample'), 'example');
+  assert.equal(mockObject.get('dataB.sample'), 'example');
+
+  mockObject.set('model', mockModelA);
+
+  assert.equal(mockObject.get('dataA.sample'), 'foo');
+  assert.equal(mockObject.get('dataB.sample'), 'foobar');
+});
