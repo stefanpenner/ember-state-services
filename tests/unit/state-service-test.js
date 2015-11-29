@@ -119,9 +119,10 @@ test('that initialState gets passed with the correct parameters', function(asser
 
   mockObject = Ember.Object.extend({
     container,
-    model: mockModelA,
     data: stateFor('foo-test-state', 'model')
-  }).create();
+  }).create({
+    model: mockModelA
+  });
 
   assert.expect(2);
   mockObject.get('data');
@@ -130,9 +131,10 @@ test('that initialState gets passed with the correct parameters', function(asser
 test('that if the state name does not exist one will be proved for you', function(assert) {
   let mockObject = Ember.Object.extend({
     container,
-    model: mockModelA,
     data: stateFor('a-state-that-does-not-exist', 'model')
-  }).create();
+  }).create({
+    model: mockModelA
+  });
 
   assert.expect(1);
   assert.equal(mockObject.get('data').constructor, Ember.Object);
