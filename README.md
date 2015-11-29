@@ -82,7 +82,7 @@ import Ember from 'ember';
 var MyStateObject = Ember.Object.extend();
 
 MyStateObject.reopenClass({
-  initialState(consumerContext) {
+  initialState(instance) {
     return {
       foo: 'bar',
       hello: 'world'

@@ -107,8 +107,8 @@ test('that initialState gets passed with the correct parameters', function(asser
   let mockObject;
 
   mockStateFoo.reopenClass({
-    initialState(consumerContext) {
-      assert.equal(consumerContext, mockObject);
+    initialState(instance) {
+      assert.equal(instance, mockObject);
       assert.equal(this.constructor, mockStateFoo.constructor);
       done();
       return {};
