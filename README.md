@@ -79,7 +79,7 @@ export default Ember.Component.extend({
 ```js
 import Ember from 'ember';
 
-var MyStateObject = Ember.Object.extend();
+const MyStateObject = Ember.Object.extend();
 
 MyStateObject.reopenClass({
   initialState() {
@@ -96,9 +96,22 @@ export default MyStateObject;
 ### Using ember-buffered-proxy
 
 ```js
-import { BufferedProxy } from 'ember-buffered-proxy/proxy';
+import BufferedProxy from 'ember-buffered-proxy/proxy';
 
-export default BufferedProxy.extend();
+const MyStateObject = BufferedProxy.extend();
+
+MyStateObject.reopenClass({
+  initialState() {
+    return {
+      content: {
+        foo: 'bar',
+        hello: 'world'
+      }
+    };
+  }
+});
+
+export default MyStateObject;
 ```
 
 Learn more about buffered proxy: https://github.com/yapplabs/ember-buffered-proxy
