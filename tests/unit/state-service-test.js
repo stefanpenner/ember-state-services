@@ -100,3 +100,42 @@ test('that state can be a simple POJO', function(assert) {
   mockObject.set('model', mockModelA);
   assert.equal(mockObject.get('data.sample'), 'foo-bar');
 });
+
+test('that initialState gets passed with the correct parameters', function(assert) {
+  const done = assert.async();
+  const mockStateFoo = Ember.Object.extend();
+  let mockObject;
+
+  mockStateFoo.reopenClass({
+    initialState(instance) {
+      assert.equal(instance, mockObject);
+      assert.equal(this.constructor, mockStateFoo.constructor);
+      done();
+      return {};
+    }
+  });
+
+  registry.register('state:foo-test-state', mockStateFoo, registryOpts);
+
+  mockObject = Ember.Object.extend({
+    container,
+    data: stateFor('foo-test-state', 'model')
+  }).create({
+    model: mockModelA
+  });
+
+  assert.expect(2);
+  mockObject.get('data');
+});
+
+test('that if the state name does not exist one will be proved for you', function(assert) {
+  let mockObject = Ember.Object.extend({
+    container,
+    data: stateFor('a-state-that-does-not-exist', 'model')
+  }).create({
+    model: mockModelA
+  });
+
+  assert.expect(1);
+  assert.equal(mockObject.get('data').constructor, Ember.Object);
+});
