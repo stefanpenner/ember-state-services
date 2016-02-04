@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import WeakMap from 'ember-weakmap/weak-map';
+import getOwner from 'ember-getowner-polyfill';
 
 let {
   computed,
@@ -48,7 +49,7 @@ export default function stateFor(stateName, propertyName) {
     let state = weakMaps[stateName];
 
     if (!state.has(propertyValue)) {
-      let newState = createStateFor(this, stateName, this.container);
+      let newState = createStateFor(this, stateName, getOwner(this));
       state.set(propertyValue, newState);
     }
 
@@ -57,13 +58,12 @@ export default function stateFor(stateName, propertyName) {
 }
 
 /*
- * Looks up the state factory on the container and sets initial state
+ * Looks up the state factory on the owner and sets initial state
  * on the instance if desired.
  */
-function createStateFor(context, stateName, container) {
-  let defaultState    = {};
-  const containerName = `state:${stateName}`;
-  let StateFactory    = container.lookupFactory(containerName);
+function createStateFor(context, stateName, owner) {
+  let defaultState = {};
+  let StateFactory = owner._lookupFactory(`state:${stateName}`);
 
   if (!StateFactory) {
     StateFactory = {};
