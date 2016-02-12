@@ -28,7 +28,7 @@ export default function stateFor(stateName, propertyName) {
     return weakMaps[stateName];
   }
 
-  assert('The second argument must be a string', typeof propertyName  === 'string');
+  assert('The second argument must be a string', typeof propertyName === 'string');
 
   return computed(propertyName, function() {
     let propertyValue = this.get(propertyName);
