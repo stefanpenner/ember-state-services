@@ -24,7 +24,7 @@ let weakMaps = {};
 * stateFor('state-name').get(this.get('property-name'));
 */
 export default function stateFor(stateName, propertyName) {
-  if (Array.prototype.slice.call(arguments).length === 1) {
+  if (arguments.length === 1) {
     return weakMaps[stateName];
   }
 
