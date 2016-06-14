@@ -6,7 +6,7 @@
 
 ### 3.0.0
 
-- [#47](https://github.com/stefanpenner/ember-state-services/pull/47) Add default factory and improve initialState
+- [#47](https://github.com/stefanpenner/ember-state-services/pull/47) [BREAKING] Add default factory and improve initialState
 - [#50](https://github.com/stefanpenner/ember-state-services/pull/50) Fix typo in README
 - [#48](https://github.com/stefanpenner/ember-state-services/pull/48) Update ember-buffered-proxy example
 - [#44](https://github.com/stefanpenner/ember-state-services/pull/44) Upgrade docs 1.x -> 2.x
