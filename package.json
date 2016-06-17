@@ -9,11 +9,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:testall"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/stefanpenner/ember-state-services.git"
+    "test": "ember try:each"
   },
   "repository": "https://github.com/stefanpenner/ember-state-services.git",
   "engines": {
@@ -53,6 +49,9 @@
     "ember-cli-babel": "^5.1.6"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "versionCompatibility": {
+      "ember": ">=1.12.1"
+    }
   }
 }
