@@ -1,6 +1,34 @@
 Upgrading Guide
 ===============
 
+Upgrade from 2.x to 3.x
+-----------------------
+The breaking change from 2.x to 3.x is the context of the `initialState`. If you were accessing the `this`
+context in 2.x, like this:
+
+```javascript
+MyStateObject.reopenClass({
+  initialState() {
+    return this.get('someProp');
+  }
+});
+```
+
+you will need to access it on the newly passed `instance` arguments, like this:
+
+```javascript
+const { get } = Ember;
+
+MyStateObject.reopenClass({
+  initialState(instance) {
+    return get(instance, 'someProp');
+  }
+});
+```
+
+For more granular information, check out the
+[diff](https://github.com/stefanpenner/ember-state-services/compare/v2.0.0...v3.0.0).
+
 Upgrade from 1.x to 2.x
 -----------------------
 Improvements were made to to the API to reduce the boilerplate needed to
