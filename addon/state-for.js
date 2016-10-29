@@ -57,6 +57,17 @@ export default function stateFor(stateName, propertyName) {
   });
 }
 
+/**
+ * Clears all states for the given state name.
+ *
+ * clearStatesFor('state-name');
+ */
+export function clearStatesFor(stateName) {
+  if (stateName && weakMaps[stateName]) {
+    weakMaps[stateName] = null;
+  }
+}
+
 /*
  * Looks up the state factory on the owner and sets initial state
  * on the instance if desired.
