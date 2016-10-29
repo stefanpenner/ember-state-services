@@ -4,7 +4,8 @@ import getOwner from 'ember-getowner-polyfill';
 
 let {
   computed,
-  assert
+  assert,
+  makeArray
 } = Ember;
 
 /*
@@ -60,11 +61,19 @@ export default function stateFor(stateName, propertyName) {
 /**
  * Clears all states for the given state name.
  *
- * clearStatesFor('state-name');
+ * clearStates(); // Clears all states
+ * clearStates('state-name');
+ * clearStates(['state-name-1', 'state-name-2']);
  */
-export function clearStatesFor(stateName) {
-  if (stateName && weakMaps[stateName]) {
-    weakMaps[stateName] = null;
+export function clearStates(stateNames) {
+  if (!stateNames || typeof stateNames === 'undefined') {
+    weakMaps = {};
+  } else {
+    makeArray(stateNames).forEach((stateName) => {
+      if (stateName && weakMaps[stateName]) {
+        weakMaps[stateName] = null;
+      }
+    });
   }
 }
 
