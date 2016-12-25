@@ -4,6 +4,7 @@ import stateFor from 'ember-state-services/state-for';
 
 let registry;
 let container;
+let owner;
 let subject;
 
 let mockModelA    = { id: 1, subject: 'Hello World' };
@@ -12,10 +13,31 @@ let mockStatePOJO = { sample: 'example' };
 
 const registryOpts = { singleton: true, instantiate: false };
 
+const Owner = (function() {
+  if (Ember._RegistryProxyMixin && Ember._ContainerProxyMixin) {
+    return Ember.Object.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin);
+  }
+
+  return Ember.Object.extend();
+})();
+
+function createDummyObject (extendProps, createProps) {
+  if (typeof owner.ownerInjection === "function") {
+    return Ember.Object.extend(extendProps).create(owner.ownerInjection(), createProps);
+  } else {
+    return Ember.Object.extend(Ember.merge({container}, extendProps)).create(createProps);
+  }
+}
+
 module('State Mixin', {
   setup() {
     registry  = new Ember.Registry();
-    container = new Ember.Container(registry);
+    owner = Owner.create({
+      __registry__: registry,
+      __container__: null
+    });
+    container = new Ember.Container(registry, { owner });
+    owner.__container__ = container;
 
     let mockState = Ember.Object.extend({
       foo: 'bar'
@@ -38,12 +60,10 @@ module('State Mixin', {
     registry.register('state:test-state', mockState, registryOpts);
     registry.register('state:test-state-b', mockStateB, registryOpts);
     registry.register('state:test-state-pojo', mockStatePOJO, registryOpts);
-
-    subject = Ember.Object.extend({
-      container,
+    subject = createDummyObject({
       model: mockModelA,
       data: stateFor('test-state', 'model')
-    }).create();
+    });
   }
 });
 
@@ -73,12 +93,11 @@ test('that when the stateFor key changes the state changes', function(assert) {
 });
 
 test('that a single object can have multiple state cps', function(assert) {
-  let mockObject = Ember.Object.extend({
-    container,
+  let mockObject = createDummyObject({
     model: mockModelA,
     dataA: stateFor('test-state', 'model'),
     dataB: stateFor('test-state-b', 'model')
-  }).create();
+  });
 
   assert.expect(2);
   assert.equal(mockObject.get('dataA.bar'), 'foo');
@@ -86,11 +105,10 @@ test('that a single object can have multiple state cps', function(assert) {
 });
 
 test('that state can be a simple POJO', function(assert) {
-  let mockObject = Ember.Object.extend({
-    container,
+  let mockObject = createDummyObject({
     model: mockModelA,
     data: stateFor('test-state-pojo', 'model')
-  }).create();
+  });
 
   assert.expect(3);
   assert.equal(mockObject.get('data.sample'), 'example');
@@ -117,10 +135,9 @@ test('that initialState gets passed with the correct parameters', function(asser
 
   registry.register('state:foo-test-state', mockStateFoo, registryOpts);
 
-  mockObject = Ember.Object.extend({
-    container,
+  mockObject = createDummyObject({
     data: stateFor('foo-test-state', 'model')
-  }).create({
+  }, {
     model: mockModelA
   });
 
@@ -129,10 +146,9 @@ test('that initialState gets passed with the correct parameters', function(asser
 });
 
 test('that if the state name does not exist one will be proved for you', function(assert) {
-  let mockObject = Ember.Object.extend({
-    container,
+  let mockObject = createDummyObject({
     data: stateFor('a-state-that-does-not-exist', 'model')
-  }).create({
+  }, {
     model: mockModelA
   });
 
