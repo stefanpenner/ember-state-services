@@ -1,5 +1,14 @@
 # ember-state-services Changelog
 
+### 3.2.0
+- [#66](https://github.com/stefanpenner/ember-state-services/pull/66) Use getOwner directly from Ember to avoid getOwner import deprecation
+- [#60](https://github.com/stefanpenner/ember-state-services/pull/60) Updating to ember-cli 2.8
+- [#59](https://github.com/stefanpenner/ember-state-services/pull/59) Updating to ember-cli 2.6
+- [#58](https://github.com/stefanpenner/ember-state-services/pull/58) Buffered proxy upgrade to 0.6.0
+- [#57](https://github.com/stefanpenner/ember-state-services/pull/57) Upgrade from 2.x to 3.x docs
+- [#56](https://github.com/stefanpenner/ember-state-services/pull/56) Add changelog
+- [#54](https://github.com/stefanpenner/ember-state-services/pull/54) Arity check rather then truthyness
+
 ### 3.1.0
 
 - [#51](https://github.com/stefanpenner/ember-state-services/pull/51) Use getOwner API to lookupFactory
