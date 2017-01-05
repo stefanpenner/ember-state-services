@@ -1,7 +1,9 @@
-# ember-state-services Changelog
+# Ember State Services Changelog
+
+### 3.3.0
+- [#66](https://github.com/stefanpenner/ember-state-services/pull/66) Use getOwner directly from Ember to avoid getOwner import deprecation
 
 ### 3.2.0
-- [#66](https://github.com/stefanpenner/ember-state-services/pull/66) Use getOwner directly from Ember to avoid getOwner import deprecation
 - [#60](https://github.com/stefanpenner/ember-state-services/pull/60) Updating to ember-cli 2.8
 - [#59](https://github.com/stefanpenner/ember-state-services/pull/59) Updating to ember-cli 2.6
 - [#58](https://github.com/stefanpenner/ember-state-services/pull/58) Buffered proxy upgrade to 0.6.0
