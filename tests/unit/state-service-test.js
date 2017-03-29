@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { module, test } from 'qunit';
+import { module, test } from 'ember-qunit';
 import stateFor from 'ember-state-services/state-for';
 
 let registry;
@@ -30,7 +30,8 @@ function createDummyObject (extendProps, createProps) {
 }
 
 module('State Mixin', {
-  setup() {
+  unit: true,
+  beforeEach() {
     registry  = new Ember.Registry();
     owner = Owner.create({
       __registry__: registry,

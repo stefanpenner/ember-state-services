@@ -63,22 +63,24 @@ export default function stateFor(stateName, propertyName) {
  */
 function createStateFor(context, stateName, owner) {
   let defaultState = {};
-  let StateFactory = owner._lookupFactory(`state:${stateName}`);
+  const StateFactory = owner.factoryFor(`state:${stateName}`);
 
   if (!StateFactory) {
-    StateFactory = {};
+    return Ember.Object.create();
   }
 
-  if (typeof StateFactory.initialState === 'function') {
-    defaultState = StateFactory.initialState.call(StateFactory, context);
+  const StateFactoryClass = StateFactory.class;
+
+  if (typeof StateFactoryClass.initialState === 'function') {
+    defaultState = StateFactoryClass.initialState.call(StateFactoryClass, context);
   }
-  else if (StateFactory.initialState) {
+  else if (StateFactoryClass.initialState) {
     throw new TypeError('initialState property must be a function');
   }
 
-  if (StateFactory.create) {
-    return StateFactory.create(defaultState);
+  if (Ember.Object.detect(StateFactoryClass)) {
+    return StateFactoryClass.create(defaultState);
   }
 
-  return Ember.Object.create(StateFactory);
+  return Ember.Object.create(StateFactoryClass);
 }
