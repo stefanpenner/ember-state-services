@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "ember-cli-babel": "^5.1.7",
+    "ember-getowner-polyfill": "^1.2.2",
     "ember-weakmap": "2.0.0"
   },
   "devDependencies": {
