@@ -1,5 +1,9 @@
 # Ember State Services Changelog
 
+### 3.4.0
+- [#69](https://github.com/stefanpenner/ember-state-services/pull/69) Upgrading to 2.12.0 and using factoryFor over _lookupFactory
+- [#68](https://github.com/stefanpenner/ember-state-services/pull/68) Add lock file
+
 ### 3.3.0
 - [#66](https://github.com/stefanpenner/ember-state-services/pull/66) Use getOwner directly from Ember to avoid getOwner import deprecation
 
