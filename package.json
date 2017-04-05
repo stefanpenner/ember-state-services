@@ -1,6 +1,6 @@
 {
   "name": "ember-state-services",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "State management pattern for EmberJS applications",
   "keywords": [
     "ember-addon"
