@@ -87,7 +87,7 @@ test('that stateFor with a single param returns the map which is initially unpop
   let data = subject.get('data');
 
   assert.equal(data.bar, 'foo');
-  assert.equal(map.get(mockModelA).bar, 'foo');
+  assert.equal(map.get(mockModelA), data);
 });
 
 test('that the state factory creates the correct object', function(assert) {
