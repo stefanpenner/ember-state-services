@@ -24,11 +24,11 @@ let weakMaps = {};
 * stateFor('state-name').get(this.get('property-name'));
 */
 export default function stateFor(stateName, propertyName) {
-  if (!weakMaps[stateName]) {
-    weakMaps[stateName] = new WeakMap();
-  }
-
   let state = weakMaps[stateName];
+
+  if (state === undefined) {
+    state = weakMaps[stateName] = new WeakMap();
+  }
 
   if (arguments.length === 1) {
     return state;
