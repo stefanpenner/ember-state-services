@@ -24,8 +24,14 @@ let weakMaps = {};
 * stateFor('state-name').get(this.get('property-name'));
 */
 export default function stateFor(stateName, propertyName) {
+  let state = weakMaps[stateName];
+
+  if (state === undefined) {
+    state = weakMaps[stateName] = new WeakMap();
+  }
+
   if (arguments.length === 1) {
-    return weakMaps[stateName];
+    return state;
   }
 
   assert('The second argument must be a string', typeof propertyName === 'string');
@@ -41,12 +47,6 @@ export default function stateFor(stateName, propertyName) {
     if (typeof propertyValue !== 'object' && typeof propertyValue !== 'function') {
       throw new TypeError('The state key must resolve to a non primitive value');
     }
-
-    if (!weakMaps[stateName]) {
-      weakMaps[stateName] = new WeakMap();
-    }
-
-    let state = weakMaps[stateName];
 
     if (!state.has(propertyValue)) {
       let newState = createStateFor(this, stateName, getOwner(this));
