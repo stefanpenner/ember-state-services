@@ -73,7 +73,21 @@ test('that stateFor with a single param returns the map before being accessed fi
   assert.expect(1);
   
   let map = stateFor('test-state');
+
   assert.ok(map instanceof WeakMap);
+});
+
+test('that stateFor with a single param returns the map which is initially unpopulated', function(assert) {
+  assert.expect(3);
+  
+  let map = stateFor('test-state');
+
+  assert.notOk(map.get(mockModelA));
+
+  let data = subject.get('data');
+
+  assert.equal(data.bar, 'foo');
+  assert.equal(map.get(mockModelA).bar, 'foo');
 });
 
 test('that the state factory creates the correct object', function(assert) {
