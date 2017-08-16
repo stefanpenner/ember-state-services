@@ -1,5 +1,8 @@
 # Ember State Services Changelog
 
+### 4.0.0
+- [#72](https://github.com/stefanpenner/ember-state-services/pull/72) Create weakmap before returning weakmap
+
 ### 3.4.0
 - [#69](https://github.com/stefanpenner/ember-state-services/pull/69) Upgrading to 2.12.0 and using factoryFor over _lookupFactory
 - [#68](https://github.com/stefanpenner/ember-state-services/pull/68) Add lock file
