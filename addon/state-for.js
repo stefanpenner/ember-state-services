@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import WeakMap from 'ember-weakmap/weak-map';
 
 let {
   computed,
   assert,
-  getOwner
+  getOwner,
+  WeakMap
 } = Ember;
 
 /*
