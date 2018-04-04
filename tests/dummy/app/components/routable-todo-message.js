@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import { equal } from '@ember/object/computed';
+import Component from '@ember/component';
 import stateFor from 'ember-state-services/state-for';
 
-export default Ember.Component.extend({
+export default Component.extend({
   data: stateFor('todos', 'todo'),
 
-  activeTodo: Ember.computed.equal('todo.status', 'active'),
+  activeTodo: equal('todo.status', 'active'),
 
   actions: {
     edit() {
@@ -12,7 +14,7 @@ export default Ember.Component.extend({
     },
 
     update() {
-      this.get('data').applyChanges(Ember.A(['title', 'body']));
+      this.get('data').applyChanges(A(['title', 'body']));
       this.get('data').discardChanges();
     },
 
@@ -23,12 +25,12 @@ export default Ember.Component.extend({
     trash() {
       this.set('todo.status', 'trash');
       this.get('data').discardChanges();
-      this.attrs.transitionAction('active');
+      this.transitionAction('active');
     },
 
     restore() {
       this.set('todo.status', 'active');
-      this.attrs.transitionAction('trash');
+      this.transitionAction('trash');
     }
   }
 });

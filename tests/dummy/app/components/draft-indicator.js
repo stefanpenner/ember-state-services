@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 import stateFor from 'ember-state-services/state-for';
 
-export default Ember.Component.extend({
+export default Component.extend({
   data: stateFor('todos', 'todo'),
 
-  isDraft: Ember.computed('data.isEditing', 'data.title', 'data.body', function() {
+  isDraft: computed('data.{isEditing,title,body}', function() {
     var todoTitle = this.get('todo.title');
     var todoBody = this.get('todo.body');
     var dataTitle = this.get('data.title');

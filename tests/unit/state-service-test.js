@@ -1,3 +1,5 @@
+import { merge } from '@ember/polyfills';
+import EmberObject from '@ember/object';
 import Ember from 'ember';
 import { module, test } from 'ember-qunit';
 import stateFor from 'ember-state-services/state-for';
@@ -15,17 +17,17 @@ const registryOpts = { singleton: true, instantiate: false };
 
 const Owner = (function() {
   if (Ember._RegistryProxyMixin && Ember._ContainerProxyMixin) {
-    return Ember.Object.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin);
+    return EmberObject.extend(Ember._RegistryProxyMixin, Ember._ContainerProxyMixin);
   }
 
-  return Ember.Object.extend();
+  return EmberObject.extend();
 })();
 
 function createDummyObject (extendProps, createProps) {
   if (typeof owner.ownerInjection === "function") {
-    return Ember.Object.extend(extendProps).create(owner.ownerInjection(), createProps);
+    return EmberObject.extend(extendProps).create(owner.ownerInjection(), createProps);
   } else {
-    return Ember.Object.extend(Ember.merge({container}, extendProps)).create(createProps);
+    return EmberObject.extend(merge({container}, extendProps)).create(createProps);
   }
 }
 
@@ -40,11 +42,11 @@ module('State Mixin', {
     container = new Ember.Container(registry, { owner });
     owner.__container__ = container;
 
-    let mockState = Ember.Object.extend({
+    let mockState = EmberObject.extend({
       foo: 'bar'
     });
 
-    let mockStateB = Ember.Object.extend();
+    let mockStateB = EmberObject.extend();
 
     mockState.reopenClass({
       initialState() {
@@ -143,7 +145,7 @@ test('that state can be a simple POJO', function(assert) {
 
 test('that initialState gets passed with the correct parameters', function(assert) {
   const done = assert.async();
-  const mockStateFoo = Ember.Object.extend();
+  const mockStateFoo = EmberObject.extend();
   let mockObject;
 
   mockStateFoo.reopenClass({
@@ -175,5 +177,5 @@ test('that if the state name does not exist one will be proved for you', functio
   });
 
   assert.expect(1);
-  assert.equal(mockObject.get('data').constructor, Ember.Object);
+  assert.equal(mockObject.get('data').constructor, EmberObject);
 });
