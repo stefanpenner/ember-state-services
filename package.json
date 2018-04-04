@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "ember-cli-babel": "^6.3.0",
-    "ember-factory-for-polyfill": "^1.2.0",
     "ember-weakmap": "^3.1.0"
   },
   "devDependencies": {
