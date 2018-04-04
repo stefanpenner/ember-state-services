@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 import todos from '../models/todos';
 
-export default Ember.Route.extend({
+export default Route.extend({
   model(params) {
     return todos.filter(todo => todo.status === params.status);
   },

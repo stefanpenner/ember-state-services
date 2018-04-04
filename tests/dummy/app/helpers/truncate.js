@@ -1,6 +1,6 @@
-import Ember from "ember";
+import { helper as buildHelper } from '@ember/component/helper';
 
-export default Ember.Helper.helper(function(params) {
+export default buildHelper(function(params) {
   var sliceAmount = params[1] || 80;
 
   if(params[0].length <= sliceAmount) {

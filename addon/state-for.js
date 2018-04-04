@@ -1,9 +1,9 @@
+import EmberObject, { computed } from '@ember/object';
+import { assert } from '@ember/debug';
+import { getOwner } from '@ember/application';
 import Ember from 'ember';
 
 let {
-  computed,
-  assert,
-  getOwner,
   WeakMap
 } = Ember;
 
@@ -66,7 +66,7 @@ function createStateFor(context, stateName, owner) {
   const StateFactory = owner.factoryFor(`state:${stateName}`);
 
   if (!StateFactory) {
-    return Ember.Object.create();
+    return EmberObject.create();
   }
 
   const StateFactoryClass = StateFactory.class;
@@ -78,9 +78,9 @@ function createStateFor(context, stateName, owner) {
     throw new TypeError('initialState property must be a function');
   }
 
-  if (Ember.Object.detect(StateFactoryClass)) {
+  if (EmberObject.detect(StateFactoryClass)) {
     return StateFactoryClass.create(defaultState);
   }
 
-  return Ember.Object.create(StateFactoryClass);
+  return EmberObject.create(StateFactoryClass);
 }
