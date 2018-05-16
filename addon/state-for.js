@@ -79,8 +79,18 @@ function createStateFor(context, stateName, owner) {
   }
 
   if (EmberObject.detect(StateFactoryClass)) {
-    return StateFactoryClass.create(defaultState);
+    return createClassInstance(StateFactoryClass, defaultState, owner);
   }
 
-  return EmberObject.create(StateFactoryClass);
+  return createClassInstance(EmberObject, StateFactoryClass, owner);
+}
+
+function createClassInstance(cls, props, owner) {
+  if (typeof owner.ownerInjection === 'function') {
+    // ember >= 2.3.0
+    return cls.create(owner.ownerInjection(), props)
+  }
+
+  // ember < 2.3.0
+  return cls.extend({ container: owner.__container__ }).create(props)
 }
