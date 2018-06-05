@@ -79,8 +79,11 @@ function createStateFor(context, stateName, owner) {
   }
 
   if (EmberObject.detect(StateFactoryClass)) {
-    return StateFactoryClass.create(defaultState);
+    return StateFactoryClass.create(
+      owner.ownerInjection(),
+      defaultState
+    );
   }
 
-  return EmberObject.create(StateFactoryClass);
+  return EmberObject.create(owner.ownerInjection(), StateFactoryClass);
 }
