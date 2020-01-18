@@ -27,9 +27,10 @@ ember install ember-state-services
 /*
  * First create a state file that returns an object within app/states/<STATE_NAME>.js
  */
-import Ember from 'ember';
+import EO from '@ember/object';
 
-export default Ember.Object.extend();
+export default class MyState extends EO {
+};
 ```
 
 ## Usage
@@ -37,11 +38,12 @@ export default Ember.Object.extend();
 ### Component
 
 ```js
-import Ember from 'ember';
+import Component from '@ember/component';
+import { action } from '@ember/object';
 import stateFor from 'ember-state-services/state-for';
 
-export default Ember.Component.extend({
-  tagName: 'form',
+export default class MyComponent extends Component {
+  tagName = 'form';
 
   /*
   * stateFor returns a computed property that provides a given
@@ -52,24 +54,23 @@ export default Ember.Component.extend({
   * with access to the given model (email in this case) and the state
   * bucket (<STATE_NAME> in this case).
   */
-  data: stateFor('<STATE_NAME>', 'email'),
+  @stateFor('<STATE_NAME>', 'email') data;
 
-  actions: {
-    submitForm() {
-      // apply changes to the email model
-      this.get('email').setProperties(this.get('data'));
-    }
+  @action
+  submitForm() {
+    // apply changes to the email model
+    this.email.setProperties(this.data);
   }
-});
+};
 ```
 
 ### Template
 
 ```js
-<label>Subject: {{input value=data.subject}}</label><br>
-<label>from:   {{input value=data.from}}</label><br>
-<label>body:   {{textarea value=data.body}}</label><br>
-<button {{action 'submitForm'}}>Submit Form</button>
+<label>Subject: <Input @value={{this.data.subject}} /></label><br>
+<label>from:   <Input @value={{this.data.from}} /></label><br>
+<label>body:   <Textarea @value={{this.data.body}} /></label><br>
+<button {{on "click" (fn this.submitForm)}}>Submit Form</button>
 ```
 
 ## Advanced
@@ -77,20 +78,16 @@ export default Ember.Component.extend({
 ### Setting initial state
 
 ```js
-import Ember from 'ember';
+import EO from '@ember/object';
 
-const MyStateObject = Ember.Object.extend();
-
-MyStateObject.reopenClass({
-  initialState(instance) {
+export default class MyStateObject extends EO {
+  static initialState(/* instance */) {
     return {
       foo: 'bar',
       hello: 'world'
     };
   }
-});
-
-export default MyStateObject;
+}
 ```
 
 ### Using ember-buffered-proxy
